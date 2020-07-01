@@ -1,15 +1,15 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable linebreak-style */
-import { html, customElement, LitElement, property, TemplateResult } from 'lit-element';
+import { html, customElement, property, TemplateResult } from 'lit-element';
 import styles from './rating-bars-css';
+import { TranslationClass, events } from '@orxe-culture/lit';
 
 @customElement('orxe-rating-bars')
-export default class OrxeRatingBars extends LitElement {
+export default class OrxeRatingBars extends TranslationClass {
   /**
-   * Implement `render` to define a template for button element.
+   * 
    */
-
   @property({type: Number, reflect: true})
   rating = 0;
   
@@ -20,11 +20,13 @@ export default class OrxeRatingBars extends LitElement {
   a11yLabel = ""; // Experience 7.1 out of 10
 
   @property({type: Number})
-  conversionRate = 0;
+  conversionRate = 10;
 
-  @property({type: String})
   _ratingColor = '';
   
+  _labelCultureKey = "";
+  _displayRate = 0;
+
   _RatingEnum = {
     'Poor': 'poor',
     'Normal': 'normal',
@@ -40,7 +42,7 @@ export default class OrxeRatingBars extends LitElement {
           <div id="rating-bar-progress" class="${this._ratingColor} rating-bar-progress" style="width:${ this.rating <=100 ? this.rating : 0 }%;"></div>
         </div>
         <div class="rating-bar-label">
-          <span>${this.label}</span>
+          <span>${this.t(this._labelCultureKey)}</span>
           <span>${this.rating / this.conversionRate}</span>
         </div>
       </div>
@@ -48,27 +50,38 @@ export default class OrxeRatingBars extends LitElement {
   }
 
   firstUpdated() {
+    this._labelCultureKey = 'label_'+ this.label.toLowerCase();
+    this._displayRate = this.rating / this.conversionRate;
+
     if (!this.hasAttribute('aria-label')) {
-      this._handlea11yLabel();
+      events.initialized.subscribe((isInitialized) => {
+        if (isInitialized) {
+          this._handlea11yLabel();
+        }
+      });
     }
+
     this.handleProgressColor();
   }
 
   handleProgressColor() {
       this._ratingColor = this._RatingEnum.Poor;
+      this._setRatingColorClass();
+  }
 
-      if (this.rating >=68 && this.rating < 75 ) {
-        this._ratingColor = this._RatingEnum.Normal;
-      }
-      if (this.rating >=75 && this.rating < 80 ) {
-        this._ratingColor = this._RatingEnum.Good;
-      } 
-      if (this.rating >=80 && this.rating <= 85) {
-        this._ratingColor = this._RatingEnum.Excellent;
-      } 
-      if (this.rating > 85 ) {
-        this._ratingColor = this._RatingEnum.Awesome;
-      }
+  _setRatingColorClass(){
+    if (this.rating >=68 && this.rating < 75 ) {
+      this._ratingColor = this._RatingEnum.Normal;
+    }
+    if (this.rating >=75 && this.rating < 80 ) {
+      this._ratingColor = this._RatingEnum.Good;
+    } 
+    if (this.rating >=80 && this.rating <= 85) {
+      this._ratingColor = this._RatingEnum.Excellent;
+    } 
+    if (this.rating > 85 ) {
+      this._ratingColor = this._RatingEnum.Awesome;
+    }
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -77,11 +90,12 @@ export default class OrxeRatingBars extends LitElement {
 
   _handlea11yLabel() {
     let ariaLabel = '';
+    let translatedAriaLabel = `${this.t('aria_label',{label:this.label, rate:this._displayRate, conversionRate:this.conversionRate})}`;
     if (this.a11yLabel) {
       ariaLabel += `${this.a11yLabel} `;
     }
     if (this.rating && this.conversionRate && this.label) {
-      ariaLabel += `${this.label} ${this.rating / this.conversionRate} out of ${this.conversionRate}`;
+      ariaLabel += translatedAriaLabel;
     }
     this.setAttribute('aria-label', ariaLabel);
   }

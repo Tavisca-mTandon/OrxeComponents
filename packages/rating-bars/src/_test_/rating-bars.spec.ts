@@ -1,6 +1,7 @@
 /* eslint-disable linebreak-style */
 import { OrxeRatingBars } from '..';
-import '..';
+import '..'
+import {events} from '@orxe-culture/core'
 
 describe("orxe-rating-bars", ()=> {
   let orxeRatingBars: OrxeRatingBars = null;
@@ -20,7 +21,12 @@ describe("orxe-rating-bars", ()=> {
     });
 
     it('Should Check Aria Label', () => {
-      orxeRatingBars._handlea11yLabel();
+
+      events.initialized.subscribe((isInitialized) => {
+        if (isInitialized) {
+          orxeRatingBars._handlea11yLabel();
+        }
+      });
       expect(orxeRatingBars.getAttribute('aria-label')).toEqual('Business 8.3 out of 10');
     });
 
