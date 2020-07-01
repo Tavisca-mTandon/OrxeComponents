@@ -20,7 +20,7 @@ export default class OrxeRatingBars extends LitElement {
   a11yLabel = ""; // Experience 7.1 out of 10
 
   @property({type: Number})
-  conversionRate = 0;
+  conversionRate = 10;
 
   @property({type: String})
   _ratingColor = '';
