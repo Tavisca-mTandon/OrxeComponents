@@ -1,0 +1,43 @@
+@import './rating-bars-map.scss';
+
+:host .rating-bar-container {
+
+    .rating-bar-shell {
+        background-color: var(--orxe-bar-shell-color);
+        padding: var(--orxe-bar-shell-padding);
+        margin-bottom: var(--orxe-bar-shell-margin-bottom);
+        border-radius: var(--orxe-bar-shell-border-radius);
+        
+        .rating-bar-progress {
+            border-radius: var(--orxe-bar-shell-border-radius);
+            height: var(--orxe-bar-progress-height);
+            max-width: 100%;
+        }
+    }
+
+    .rating-bar-label {
+        font-family: var(--orxe-bar-label-font-family);
+        color: var(--orxe-bar-label-color);
+        font-weight: var(--orxe-bar-label-font-weight);
+        font-size: var(--orxe-bar-label-font-size);
+        span:not(:first-child){
+            float:right;
+        }
+    }
+
+    .poor {
+        background-color: var(--orxe-progress-color-poor);
+    }
+    .normal {
+        background-color: var(--orxe-progress-color-normal);
+    }
+    .good {
+        background-color: var(--orxe-progress-color-good);
+    }
+    .excellent {
+        background-color: var(--orxe-progress-color-excellent);
+    }
+    .awesome {
+        background-color: var(--orxe-progress-color-awesome);
+    }
+}
