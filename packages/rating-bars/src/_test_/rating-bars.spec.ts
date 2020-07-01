@@ -25,9 +25,9 @@ describe("orxe-rating-bars", ()=> {
       events.initialized.subscribe((isInitialized) => {
         if (isInitialized) {
           orxeRatingBars._handlea11yLabel();
+          expect(orxeRatingBars.getAttribute('aria-label')).toEqual('Business 8.3 out of 10');
         }
       });
-      expect(orxeRatingBars.getAttribute('aria-label')).toEqual('Business 8.3 out of 10');
     });
 
      it('Should Check Excellent Based On Rating 83', async ()=> {
@@ -50,7 +50,7 @@ describe("orxe-rating-bars", ()=> {
       expect(orxeRatingBars.shadowRoot.querySelectorAll('.good').length).toEqual(1);
      });
 
-     it('Should Check Normal Based On Rating 96', async ()=> {
+     it('Should Check Awesome Based On Rating 96', async ()=> {
       orxeRatingBars.rating = 96;
       orxeRatingBars.handleProgressColor();
       await orxeRatingBars.requestUpdate();
